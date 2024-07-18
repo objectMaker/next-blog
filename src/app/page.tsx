@@ -6,7 +6,7 @@ export default function Home() {
   const [res2, setRes2] = useState('');
   useEffect(() => {
     async function fetchD() {
-      const res = await fetch('http://localhost:3000/api/users', {
+      const res = await fetch('http://localhost:3000/api/user', {
         method: 'GET',
       });
       const res3 = await res.json();
