@@ -52,12 +52,14 @@ export default function Page() {
     },
   });
   const router = useRouter();
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  type FormValues = z.infer<typeof formSchema>;
+  async function onSubmit(values: FormValues) {
     const cValues = {
       ...values,
-    };
+    } as Omit<FormValues, 'confirmPassword'> & { confirmPassword?: string };
+
     delete cValues.confirmPassword;
+
     const res = await fetch('/api/user', {
       method: 'POST',
       body: JSON.stringify({
