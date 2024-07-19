@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -66,7 +65,7 @@ export default function Page() {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <FormField
           control={form.control}
           name="username"
@@ -76,9 +75,6 @@ export default function Page() {
               <FormControl>
                 <Input placeholder="username" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -92,9 +88,32 @@ export default function Page() {
               <FormControl>
                 <Input placeholder="email" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display email.
-              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>password</FormLabel>
+              <FormControl>
+                <Input placeholder="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>confirmPassword</FormLabel>
+              <FormControl>
+                <Input placeholder="confirmPassword" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
