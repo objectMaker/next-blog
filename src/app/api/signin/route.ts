@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   const token = jwt.sign(
     {
       userId: user?.id,
-      exp: Math.floor(Date.now() / 1000) + 60,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
     },
     'token private key',
   );
