@@ -14,34 +14,32 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
 
-const formSchema = z.object({
-  email: z.string().email(),
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .max(22, {
-      message: 'password must be less than 22 characters.',
-    }),
-  password: z
-    .string()
-    .min(6, {
-      message: 'email must be at least 6 characters.',
-    })
-    .max(22, {
-      message: 'password must be less than 22 characters.',
-    }),
-  confirmPassword: z
-    .string()
-    .min(6, {
-      message: 'email must be at least 6 characters.',
-    })
-    .max(22, {
-      message: 'password must be less than 22 characters.',
-    }),
-});
+const formSchema = z
+  .object({
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(6, {
+        message: 'password must be at least 6 characters.',
+      })
+      .max(22, {
+        message: 'password must be less than 22 characters.',
+      }),
+    confirmPassword: z
+      .string()
+      .min(6, {
+        message: 'password must be at least 6 characters.',
+      })
+      .max(22, {
+        message: 'password must be less than 22 characters.',
+      }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 export default function Page() {
   // ...
@@ -49,36 +47,35 @@ export default function Page() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      username: '',
       password: '',
       confirmPassword: '',
     },
   });
+  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const cValues = {
+      ...values,
+    };
+    delete cValues.confirmPassword;
     const res = await fetch('/api/user', {
       method: 'POST',
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        ...cValues,
+        username: 'pig hero No.' + Date.now(),
+      }),
     });
-    const realRes = await res.json();
-    console.log(realRes, 'realres');
+    try {
+      await res.json();
+      alert('自动登录');
+      router.replace('/profile');
+    } catch (err) {
+      console.log(err);
+    }
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="email"
@@ -99,7 +96,7 @@ export default function Page() {
             <FormItem>
               <FormLabel>password</FormLabel>
               <FormControl>
-                <Input placeholder="password" {...field} />
+                <Input placeholder="password" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,14 +109,18 @@ export default function Page() {
             <FormItem>
               <FormLabel>confirmPassword</FormLabel>
               <FormControl>
-                <Input placeholder="confirmPassword" {...field} />
+                <Input
+                  placeholder="confirmPassword"
+                  type="password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" className="w-full">
-          Submit
+          SignUp
         </Button>
       </form>
     </Form>

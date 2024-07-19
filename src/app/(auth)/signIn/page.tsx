@@ -72,7 +72,7 @@ export default function Page() {
           )}
         />
         <Button type="submit" className="w-full">
-          Submit
+          SignIn
         </Button>
       </form>
     </Form>
