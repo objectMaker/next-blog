@@ -17,13 +17,14 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'h-screen bg-background font-sans antialiased',
+          'flex h-screen flex-col bg-background font-sans antialiased',
           fontSans.variable,
         )}
       >
         <Header />
-
-        {children}
+        <div className="flex-1 overflow-hidden">
+          <div className="h-full overflow-y-auto">{children}</div>
+        </div>
       </body>
     </html>
   );

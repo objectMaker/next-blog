@@ -47,7 +47,6 @@ export default function DialogCloseButton({
           <div className="grid flex-1 gap-2">
             <Input
               id="link"
-              defaultValue=""
               value={formData.title}
               onChange={(e) => handleInputChange(e, 'title')}
             />
@@ -58,7 +57,6 @@ export default function DialogCloseButton({
           <div className="grid flex-1 gap-2">
             <Input
               id="link"
-              defaultValue=""
               value={formData.content}
               onChange={(e) => handleInputChange(e, 'content')}
             />
