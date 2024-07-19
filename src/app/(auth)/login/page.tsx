@@ -45,9 +45,9 @@ export default function Page() {
   }
   return (
     <div className="w-[500px] overflow-hidden rounded-md border border-gray-200 shadow-lg">
-      <h1 className="flex h-12 items-center justify-center bg-gray-700 text-lg font-bold text-white">
+      {/* <h1 className="flex h-12 items-center justify-center bg-gray-700 text-lg font-bold text-white">
         Login
-      </h1>
+      </h1> */}
       <div className="p-5 shadow-lg">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
