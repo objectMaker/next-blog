@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
 import db from '@/db';
-import { cookies } from 'next/headers';
+import { setToken } from '@/app/_utils';
+import { notFound } from 'next/navigation';
 
 export async function POST(request: NextRequest) {
   const req = await request.json();
@@ -10,16 +10,10 @@ export async function POST(request: NextRequest) {
       username: req.username,
     },
   });
-  const token = jwt.sign(
-    {
-      userId: user?.id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
-    },
-    'token private key',
-  );
-  //have user create session
-  const cookie = cookies();
-  cookie.set('token', token);
-
+  if (user?.id) {
+    setToken(user.id + '');
+  } else {
+    notFound();
+  }
   return Response.json(req);
 }

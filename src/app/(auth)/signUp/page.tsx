@@ -67,13 +67,9 @@ export default function Page() {
         username: 'pig hero No.' + Date.now(),
       }),
     });
-    try {
-      await res.json();
-      alert('自动登录');
-      router.replace('/profile');
-    } catch (err) {
-      console.log(err);
-    }
+    await res.json();
+    alert('自动登录');
+    router.replace('/profile');
   }
   return (
     <Form {...form}>

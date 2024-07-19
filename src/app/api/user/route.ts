@@ -1,6 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import db from '@/db';
+import { setToken } from '@/app/_utils';
 
 export async function GET() {
   const allUsers = await db.user.findMany();
@@ -9,9 +10,17 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const req = await request.json();
-  const cRes = await db.user.create({
+  //create user
+  await db.user.create({
     data: req,
   });
-  console.log(cRes, 'cres');
+  const user = await db.user.findUnique({
+    where: {
+      email: req.email,
+    },
+  });
+  if (user?.id) {
+    setToken(user.id + '');
+  }
   return Response.json(req);
 }
