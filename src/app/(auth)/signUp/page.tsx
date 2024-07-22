@@ -3,6 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -42,6 +44,7 @@ export const formSchema = z
   });
 
 export default function Page() {
+  const router = useRouter();
   // ...
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,7 +56,19 @@ export default function Page() {
   });
   type FormValues = z.infer<typeof formSchema>;
   async function onSubmit(values: FormValues) {
-    await handleSignUp(values);
+    try {
+      await handleSignUp(values);
+      toast.success('sign up successful,please sign in', {
+        className: 'text-green',
+      });
+      router.push('/signIn');
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error('create user failed,please try again!');
+      }
+    }
   }
   return (
     <div>

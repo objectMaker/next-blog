@@ -8,6 +8,14 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
 export const handleSignUp = async (user: z.infer<typeof formSchema>) => {
+  const dbUser = await db.user.findUnique({
+    where: {
+      email: user.email,
+    },
+  });
+  if (dbUser) {
+    throw new Error('email already exists');
+  }
   try {
     await db.user.create({
       data: {
