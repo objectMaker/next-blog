@@ -3,17 +3,33 @@ import Image from 'next/image';
 
 import Search from './Search';
 import { Button } from '@/components/ui/button';
+import { getUserInfoByJwt } from '@/actions';
 
-export default function Page() {
+export default async function Page() {
+  const userInfo = await getUserInfoByJwt();
+
   return (
     <header className="flex h-16 w-full items-center justify-between bg-slate-100 p-2">
       <Link href="/">
         <Image src="/cat.svg" height={40} width={40} alt="home"></Image>
       </Link>
       <Search />
-      <Button variant="ghost" asChild>
-        <Link href="/signUp">signUp</Link>
-      </Button>
+      {userInfo ? (
+        <div className="flex items-center">
+          <Image
+            src="/pig.svg"
+            width={42}
+            height={42}
+            alt="userImage"
+            className="cursor-pointer"
+          />
+          {userInfo?.username}
+        </div>
+      ) : (
+        <Button variant="ghost" asChild>
+          <Link href="/signUp">signUp</Link>
+        </Button>
+      )}
     </header>
   );
 }

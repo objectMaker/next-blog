@@ -52,14 +52,25 @@ export async function setToken(id: number) {
   cookie.set('token', token);
 }
 
-export async function validateJwt() {
+export async function getUserInfoByJwt() {
   const token = cookies().get('token');
   try {
-    jwt.verify(
+    const payload = (await jwt.verify(
       token?.value || '',
       process.env.NEXT_PUBLIC_JWT_SECRET as string,
-    );
+    )) as {
+      userId: number;
+      iat: number;
+      exp: number;
+    };
+    const userInfo = await db.user.findUnique({
+      where: {
+        id: payload.userId,
+      },
+    });
+    return userInfo;
   } catch (err) {
     console.log(err);
+    return null;
   }
 }

@@ -6,12 +6,11 @@ import { SearchIcon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Search() {
-  const [value, setValue] = useState('1');
+  const [value, setValue] = useState('');
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setValue(e.target.value);
   }
-  console.log(value, 'valueeeee');
 
   return (
     <div className="relative flex w-96 items-center">
