@@ -22,7 +22,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Toaster />
+        <Toaster position="top-center" richColors offset="60px" />
         <Header></Header>
         <div className="flex-1 overflow-hidden">
           <div className="h-full overflow-y-auto">{children}</div>
