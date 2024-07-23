@@ -62,6 +62,10 @@ export async function setToken(id: number) {
 
 export async function getUserInfoByJwt() {
   const token = cookies().get('token');
+  if (!token) {
+    return null;
+  }
+
   try {
     const payload = (await jwt.verify(
       token?.value || '',
