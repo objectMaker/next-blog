@@ -23,7 +23,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <StoreProvider count={3}>
+        <StoreProvider>
           <Toaster position="top-center" richColors offset="60px" />
           <Header></Header>
           {children}
