@@ -46,8 +46,16 @@ export const handleSignIn = async (user: z.infer<typeof signInformSchema>) => {
     throw new Error('create user failed');
   }
 };
+export const handleSignOut = async () => {
+  setToken(undefined);
+};
 
-export async function setToken(id: number) {
+export async function setToken(id?: number) {
+  const cookie = cookies();
+  if (!id) {
+    cookie.delete('token');
+    return;
+  }
   const token = jwt.sign(
     {
       userId: id,
@@ -56,13 +64,12 @@ export async function setToken(id: number) {
     process.env.NEXT_PUBLIC_JWT_SECRET as string,
   );
   //have user create session
-  const cookie = cookies();
   cookie.set('token', token);
 }
 
 export async function getUserInfoByJwt() {
   const token = cookies().get('token');
-  if (!token) {
+  if (!token?.value) {
     return null;
   }
 

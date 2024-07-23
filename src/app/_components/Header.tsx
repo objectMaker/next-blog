@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Search from './Search';
 import { Button } from '@/components/ui/button';
 import { getUserInfoByJwt } from '@/actions';
+import Avatar from './Avatar';
 
 export default async function Page() {
   const userInfo = await getUserInfoByJwt();
@@ -14,13 +15,15 @@ export default async function Page() {
       </Link>
       <Search />
       {userInfo ? (
-        <div className="flex cursor-pointer items-center">
-          <Image src="/pig.svg" width={42} height={42} alt="userImage" />
-          {userInfo?.username}
-        </div>
+        <Avatar>
+          <div className="flex cursor-pointer items-center">
+            <Image src="/pig.svg" width={42} height={42} alt="userImage" />
+            {userInfo?.username}
+          </div>
+        </Avatar>
       ) : (
         <Button variant="ghost" asChild>
-          <Link href="/signUp">signUp</Link>
+          <Link href="/signIn">signIn</Link>
         </Button>
       )}
     </header>
