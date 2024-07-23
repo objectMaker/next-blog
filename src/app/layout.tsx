@@ -3,6 +3,7 @@ import './globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import Header from '@/app/_components/Header';
 import { Toaster } from 'sonner';
+import StoreProvider from './StoreProvider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -22,9 +23,11 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Toaster position="top-center" richColors offset="60px" />
-        <Header></Header>
-        {children}
+        <StoreProvider count={3}>
+          <Toaster position="top-center" richColors offset="60px" />
+          <Header></Header>
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );
