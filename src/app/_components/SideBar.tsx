@@ -29,24 +29,27 @@ export default function SideBar(props: { className?: string }) {
   return (
     <div
       className={cn(
-        ' flex w-14 flex-col gap-y-2 bg-slate-200 p-2 shadow-sm transition-all duration-100 ease-out lg:w-56',
+        ' flex flex-col gap-y-2 bg-slate-200 p-2 shadow-sm transition-all duration-100 ease-out ',
         props.className,
+        collapse ? 'w-14' : 'w-56',
       )}
     >
-      {collapse}
-      {collapse ? (
-        <PanelLeftOpen
-          onClick={() => {
-            dispatch(toggleCollapse());
-          }}
-        />
-      ) : (
-        <PanelRightOpen
-          onClick={() => {
-            dispatch(toggleCollapse());
-          }}
-        />
-      )}
+      <div className=" flex justify-end">
+        {collapse ? (
+          <PanelLeftOpen
+            onClick={() => {
+              dispatch(toggleCollapse());
+            }}
+            className="cursor-pointer"
+          />
+        ) : (
+          <PanelRightOpen
+            onClick={() => {
+              dispatch(toggleCollapse());
+            }}
+          />
+        )}
+      </div>
       {sideNavList.map((item) => (
         <Link key={item.href} href={item.href}>
           {item.words}
