@@ -14,19 +14,11 @@ import { useRouter } from 'next/navigation';
 import { handleSignOut } from '@/actions';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { useAppDispatch, useAppSelector, useAppStore } from '@/lib/hooks';
-import { incremented, initializeCount, selectCount } from '@/lib/counterSlice';
-import { useRef } from 'react';
 export default function NavigationMenuDemo({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const store = useAppStore();
-  const state = store.getState();
-  const count = useAppSelector(selectCount);
-  const dispatch = useAppDispatch();
-
   const router = useRouter();
   const signOut = async () => {
     try {
@@ -44,8 +36,6 @@ export default function NavigationMenuDemo({
         <NavigationMenuItem>
           <NavigationMenuTrigger className="bg-transparent">
             {children}
-            {JSON.stringify(state)}
-            {count}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="flex w-48 flex-col gap-y-1 p-2">
@@ -55,14 +45,7 @@ export default function NavigationMenuDemo({
               <Button onClick={signOut} variant="ghost" className="h-8">
                 signOut
               </Button>
-              <Button
-                onClick={() => {
-                  dispatch(incremented());
-                }}
-                variant="ghost"
-                className="h-8"
-              ></Button>
-              count++
+              <Button variant="ghost" className="h-8"></Button>
             </div>
           </NavigationMenuContent>
         </NavigationMenuItem>

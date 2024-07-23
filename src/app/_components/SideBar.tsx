@@ -1,7 +1,13 @@
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+'use client';
 
+import { cn } from '@/lib/utils';
+import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
+import Link from 'next/link';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { selectCollapse, toggleCollapse } from '@/lib/collapseStore';
 export default function SideBar(props: { className?: string }) {
+  const dispatch = useAppDispatch();
+  const collapse = useAppSelector(selectCollapse);
   const sideNavList = [
     {
       href: '/',
@@ -27,6 +33,20 @@ export default function SideBar(props: { className?: string }) {
         props.className,
       )}
     >
+      {collapse}
+      {collapse ? (
+        <PanelLeftOpen
+          onClick={() => {
+            dispatch(toggleCollapse());
+          }}
+        />
+      ) : (
+        <PanelRightOpen
+          onClick={() => {
+            dispatch(toggleCollapse());
+          }}
+        />
+      )}
       {sideNavList.map((item) => (
         <Link key={item.href} href={item.href}>
           {item.words}

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import countReducer from './counterSlice';
+import collapseReducer from './collapseStore';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      counter: countReducer,
+      collapse: collapseReducer,
     },
   });
 };
