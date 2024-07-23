@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { PanelLeftOpen, PanelRightOpen } from 'lucide-react';
+import { PanelLeftOpen } from 'lucide-react';
 import Link from 'next/link';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { selectCollapse, toggleCollapse } from '@/lib/collapseStore';
@@ -35,20 +35,14 @@ export default function SideBar(props: { className?: string }) {
       )}
     >
       <div className=" flex justify-end">
-        {collapse ? (
+        {
           <PanelLeftOpen
             onClick={() => {
               dispatch(toggleCollapse());
             }}
-            className="cursor-pointer"
+            className={cn('cursor-pointer', collapse ? ' rotate-180' : '')}
           />
-        ) : (
-          <PanelRightOpen
-            onClick={() => {
-              dispatch(toggleCollapse());
-            }}
-          />
-        )}
+        }
       </div>
       {sideNavList.map((item) => (
         <Link key={item.href} href={item.href}>
