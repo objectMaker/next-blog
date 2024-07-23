@@ -23,7 +23,7 @@ export default function SideBar(props: { className?: string }) {
   return (
     <div
       className={cn(
-        'flex w-14 flex-col gap-y-2 bg-slate-200 p-2 shadow-sm transition-all duration-100 ease-out lg:w-56',
+        ' flex w-14 flex-col gap-y-2 bg-slate-200 p-2 shadow-sm transition-all duration-100 ease-out lg:w-56',
         props.className,
       )}
     >
