@@ -89,7 +89,6 @@ export async function getUserInfoByJwt() {
     return userInfo;
   } catch (err) {
     console.log(err);
-    cookies().delete('token');
     throw err;
   }
 }
