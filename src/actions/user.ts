@@ -90,6 +90,7 @@ export async function getUserInfoByJwt() {
     return userInfo;
   } catch (err) {
     console.log(err);
-    return null;
+    cookies().delete('token');
+    throw err;
   }
 }

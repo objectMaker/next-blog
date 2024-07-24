@@ -40,7 +40,7 @@ export default function SideBar(props: { className?: string }) {
             onClick={() => {
               dispatch(toggleCollapse());
             }}
-            className={cn('cursor-pointer', collapse ? ' rotate-180' : '')}
+            className={cn('cursor-pointer', collapse ? '' : 'rotate-180')}
           />
         }
       </div>
