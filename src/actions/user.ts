@@ -50,7 +50,7 @@ export const handleSignOut = async () => {
   setToken(undefined);
 };
 
-export async function setToken(id?: number) {
+export async function setToken(id?: string) {
   const cookie = cookies();
   if (!id) {
     cookie.delete('token');
@@ -72,13 +72,12 @@ export async function getUserInfoByJwt() {
   if (!token?.value) {
     return null;
   }
-
   try {
     const payload = (await jwt.verify(
       token?.value || '',
       process.env.NEXT_PUBLIC_JWT_SECRET as string,
     )) as {
-      userId: number;
+      userId: string;
       iat: number;
       exp: number;
     };
