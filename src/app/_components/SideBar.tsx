@@ -29,12 +29,12 @@ export default function SideBar(props: { className?: string }) {
   return (
     <div
       className={cn(
-        ' flex flex-col gap-y-2 bg-slate-200 p-2 shadow-sm transition-all duration-100 ease-out ',
+        'flex flex-col gap-y-2 bg-slate-200 p-2 shadow-sm transition-all duration-100 ease-out',
         props.className,
         collapse ? 'w-14' : 'w-56',
       )}
     >
-      <div className=" flex justify-end">
+      <div className="hidden justify-end lg:flex">
         {
           <PanelLeftOpen
             onClick={() => {
