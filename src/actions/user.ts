@@ -6,6 +6,7 @@ import db from '@/db';
 
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
+import { revalidatePath } from 'next/cache';
 
 export const handleSignUp = async (user: z.infer<typeof formSchema>) => {
   const dbUser = await db.user.findUnique({
@@ -48,6 +49,7 @@ export const handleSignIn = async (user: z.infer<typeof signInformSchema>) => {
 };
 export const handleSignOut = async () => {
   setToken(undefined);
+  revalidatePath('/', 'layout');
 };
 
 export async function setToken(id?: string) {
@@ -89,6 +91,7 @@ export async function getUserInfoByJwt() {
     return userInfo;
   } catch (err) {
     console.log(err);
+    cookies().delete('token');
     throw err;
   }
 }

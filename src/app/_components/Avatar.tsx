@@ -24,7 +24,7 @@ export default function NavigationMenuDemo({
     try {
       await handleSignOut();
       toast.success('sign out successfully,go to home page automatically');
-      router.push('/');
+      router.push('/signIn');
     } catch (err) {
       toast.error('sign out failed!');
     }
