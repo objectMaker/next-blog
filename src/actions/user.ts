@@ -49,7 +49,6 @@ export const handleSignIn = async (user: z.infer<typeof signInformSchema>) => {
 };
 export const handleSignOut = async () => {
   setToken(undefined);
-  revalidatePath('/', 'layout');
 };
 
 export async function setToken(id?: string) {
