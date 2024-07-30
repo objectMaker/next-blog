@@ -9,3 +9,4 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: '/diary',
 };
+export { auth as middleware } from '@/auth';
