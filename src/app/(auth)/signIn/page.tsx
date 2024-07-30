@@ -17,23 +17,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { handleSignIn } from '@/actions';
 import { useRouter } from 'next/navigation';
-
-export const formSchema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(6, {
-      message: 'password must be at least 6 characters.',
-    })
-    .max(22, {
-      message: 'password must be less than 22 characters.',
-    }),
-});
+import { signInformSchema } from '@/lib/schemas';
 
 export default function Page() {
   // ...
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signInformSchema>>({
+    resolver: zodResolver(signInformSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -41,7 +30,7 @@ export default function Page() {
   });
   const router = useRouter();
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof signInformSchema>) {
     try {
       await handleSignIn(values);
       toast.success('登录成功,自动跳转至首页', {

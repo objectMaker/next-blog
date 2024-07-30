@@ -17,44 +17,20 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { handleSignUp } from '@/actions';
-
-export const formSchema = z
-  .object({
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(6, {
-        message: 'password must be at least 6 characters.',
-      })
-      .max(22, {
-        message: 'password must be less than 22 characters.',
-      }),
-    confirmPassword: z
-      .string()
-      .min(6, {
-        message: 'password must be at least 6 characters.',
-      })
-      .max(22, {
-        message: 'password must be less than 22 characters.',
-      }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
-  });
+import { signUpFormSchema } from '@/lib/schemas';
 
 export default function Page() {
   const router = useRouter();
   // ...
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       email: '',
       password: '',
       confirmPassword: '',
     },
   });
-  type FormValues = z.infer<typeof formSchema>;
+  type FormValues = z.infer<typeof signUpFormSchema>;
   async function onSubmit(values: FormValues) {
     try {
       await handleSignUp(values);

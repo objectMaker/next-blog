@@ -1,13 +1,12 @@
 'use server';
-import { formSchema } from '@/app/(auth)/signUp/page';
-import { formSchema as signInformSchema } from '@/app/(auth)/signIn/page';
 import { z } from 'zod';
 import db from '@/db';
 
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
+import { signInformSchema, signUpFormSchema } from '@/lib/schemas';
 
-export const handleSignUp = async (user: z.infer<typeof formSchema>) => {
+export const handleSignUp = async (user: z.infer<typeof signUpFormSchema>) => {
   const dbUser = await db.user.findUnique({
     where: {
       email: user.email,
