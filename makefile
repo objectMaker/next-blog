@@ -15,4 +15,7 @@ push:
 generate:
 	npx prisma generate
 
-.PHONY: init up pull push initTable generate
+migrate:
+	npx prisma migrate dev
+	
+.PHONY: init up pull push initTable generate migrate
