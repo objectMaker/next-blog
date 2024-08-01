@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { signInformSchema, signUpFormSchema } from '@/lib/schemas';
 import { signIn } from '@/auth';
+import { verifyCode } from './nodeMailer';
 
 export const handleSignUp = async (user: z.infer<typeof signUpFormSchema>) => {
   const dbUser = await db.user.findUnique({
@@ -19,10 +20,16 @@ export const handleSignUp = async (user: z.infer<typeof signUpFormSchema>) => {
   if (dbUser) {
     throw new Error('email already exists');
   }
+  const formData = new FormData();
+  formData.append('email', user.email);
+  formData.append('code', user.code);
+  const pass = await verifyCode(formData);
+  if (!pass) {
+    throw new Error('verify code not valid');
+  }
   try {
     await db.user.create({
       data: {
-        username: user.email,
         email: user.email,
         password: user.password,
       },
