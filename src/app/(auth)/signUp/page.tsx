@@ -18,15 +18,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { handleSignUp } from '@/actions';
 import { signUpFormSchema } from '@/lib/schemas';
-import { createVerifyCode, verifyCode } from '@/lib/nodeMailer';
-import { useEffect, useRef, useState } from 'react';
+import { createVerifyCode } from '@/actions/nodeMailer';
+import { useState } from 'react';
 import type { MouseEvent } from 'react';
 
 export default function Page() {
   const router = useRouter();
   const [count, setCount] = useState(0);
   let timer: NodeJS.Timeout;
-  const btnRef = useRef(null);
   const handleGetVerifyCode = async (formData: FormData) => {
     let count = 60;
     timer = setInterval(() => {

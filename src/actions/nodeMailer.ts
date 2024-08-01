@@ -3,15 +3,7 @@ import nodemailer from 'nodemailer';
 import db from '@/db';
 import { CodeStatus } from '@prisma/client';
 const expireMilliSeconds = 1000 * 60;
-const transporter = nodemailer.createTransport({
-  host: 'smtp.qq.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: '528154320@qq.com',
-    pass: 'fhlmuqhukuzrbjgd',
-  },
-});
+const transporter = nodemailer.createTransport(process.env.EMAIL_SERVER);
 
 export const createVerifyCode = async (formData: FormData) => {
   const email = formData.get('email') as string;
@@ -50,7 +42,7 @@ export const createVerifyCode = async (formData: FormData) => {
   });
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: '528154320@qq.com', // sender address
+    from: process.env.EMAIL_FROM, // sender address
     to: email, // list of receivers
     subject: 'website verify code', // Subject line
     text: 'Hello world?', // plain text body
