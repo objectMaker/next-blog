@@ -77,3 +77,18 @@ model Authenticator {
 
   @@id([userId, credentialID])
 }
+
+model VerificationCode {
+  id         String     @id @default(cuid())
+  email      String
+  code       String
+  createdAt  DateTime   @default(now())
+  sendStatus CodeStatus @default(Pendding)
+
+  @@index([email])
+}
+
+enum CodeStatus {
+  Pendding
+  Arraived
+}

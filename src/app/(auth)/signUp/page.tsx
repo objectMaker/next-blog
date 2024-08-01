@@ -18,6 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { handleSignUp } from '@/actions';
 import { signUpFormSchema } from '@/lib/schemas';
+import { createVerifyCode, verifyCode } from '@/lib/nodeMailer';
 
 export default function Page() {
   const router = useRouter();
@@ -98,6 +99,34 @@ export default function Page() {
           </Button>
         </form>
       </Form>
+      <form action={createVerifyCode}>
+        <div>
+          <label htmlFor="email">email</label>
+          <input
+            type="email"
+            name="email"
+            className="rounded border px-2 py-1"
+          />
+        </div>
+        <footer>
+          <button>提交</button>
+        </footer>
+      </form>
+      <form action={verifyCode}>
+        <div>
+          <label htmlFor="email">email</label>
+          <input
+            type="email"
+            name="email"
+            className="rounded border px-2 py-1"
+          />
+          <label htmlFor="code">code</label>
+          <input type="text" name="code" className="rounded border px-2 py-1" />
+        </div>
+        <footer>
+          <button>验证</button>
+        </footer>
+      </form>
     </div>
   );
 }

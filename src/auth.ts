@@ -1,24 +1,14 @@
 import db from '@/db';
 import NextAuth from 'next-auth';
 import Github from 'next-auth/providers/github';
-import Nodemailer from 'next-auth/providers/nodemailer';
 import Credentials from 'next-auth/providers/credentials';
 import type { Provider } from 'next-auth/providers';
 
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { sendVerificationRequest } from './magicLink';
 import { saltAndHashPassword } from '@/utils/password';
 
 const providers: Provider[] = [
   Github,
-  // Nodemailer({
-  //   server: process.env.EMAIL_SERVER,
-  //   from: process.env.EMAIL_FROM,
-  //   async generateVerificationToken() {
-  //     return crypto.randomUUID();
-  //   },
-  //   sendVerificationRequest,
-  // }),
   Credentials({
     // You can specify which fields should be submitted, by adding keys to the `credentials` object.
     // e.g. domain, username, password, 2FA token, etc.
