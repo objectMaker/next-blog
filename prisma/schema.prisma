@@ -83,12 +83,12 @@ model VerificationCode {
   email      String
   code       String
   createdAt  DateTime   @default(now())
-  sendStatus CodeStatus @default(Pendding)
+  sendStatus CodeStatus @default(Pending)
 
   @@index([email])
 }
 
 enum CodeStatus {
-  Pendding
+  Pending
   Arraived
 }

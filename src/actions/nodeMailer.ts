@@ -18,14 +18,14 @@ export const createVerifyCode = async (formData: FormData) => {
     },
   });
   console.log(bbbb, 'bbb');
-  const havePendding = await db.verificationCode.findMany({
+  const havePending = await db.verificationCode.findMany({
     where: {
       email,
-      sendStatus: CodeStatus.Pendding,
+      sendStatus: CodeStatus.Pending,
     },
   });
-  if (havePendding?.length) {
-    //if have pendding status return don't create
+  if (havePending?.length) {
+    //if have Pending status return don't create
     return;
   }
   const code = Math.random().toFixed(4).slice(2) + '';
