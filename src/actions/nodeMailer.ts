@@ -2,14 +2,14 @@
 import nodemailer from 'nodemailer';
 import db from '@/db';
 import { CodeStatus } from '@prisma/client';
-const expireMilliSeconds = 1000 * 60;
+const expireMilliSeconds = 1000 * 60 * 5;
 const transporter = nodemailer.createTransport(process.env.EMAIL_SERVER);
 
 export const createVerifyCode = async (formData: FormData) => {
   const email = formData.get('email') as string;
   console.log(email, 'email');
 
-  const bbbb = await db.verificationCode.deleteMany({
+  await db.verificationCode.deleteMany({
     where: {
       email: email,
       createdAt: {
@@ -17,7 +17,7 @@ export const createVerifyCode = async (formData: FormData) => {
       },
     },
   });
-  console.log(bbbb, 'bbb');
+
   const havePending = await db.verificationCode.findMany({
     where: {
       email,
@@ -46,13 +46,18 @@ export const createVerifyCode = async (formData: FormData) => {
     to: email, // list of receivers
     subject: 'website verify code', // Subject line
     text: 'Hello world?', // plain text body
-    html: `<div style="display:flex;justify-content:center;align-items:center;">
-        <div>
-        your verify code is : 
+    html: `<div style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+        <div style="display:flex;justify-content:center;align-items:center;">
+          <div>
+            your verify code is : 
+          </div>
+          <h1 style="color:blue;">
+            ${code}
+          </h1>
         </div>
-        <h1 style="color:blue;">
-          ${code}
-        </h1>
+        <h3>
+          your verify code will expired after 5 minutes
+        </h3>
     </div>`, // html body
   });
   if (info.accepted) {
@@ -61,7 +66,7 @@ export const createVerifyCode = async (formData: FormData) => {
         id: res.id,
       },
       data: {
-        sendStatus: CodeStatus.Arraived,
+        sendStatus: CodeStatus.Arrived,
       },
     });
   }

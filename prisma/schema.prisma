@@ -90,5 +90,5 @@ model VerificationCode {
 
 enum CodeStatus {
   Pending
-  Arraived
+  Arrived
 }
