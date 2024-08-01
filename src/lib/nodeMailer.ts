@@ -52,13 +52,13 @@ export const createVerifyCode = async (formData: FormData) => {
   const info = await transporter.sendMail({
     from: '528154320@qq.com', // sender address
     to: email, // list of receivers
-    subject: 'Hello ✔', // Subject line
+    subject: 'website verify code', // Subject line
     text: 'Hello world?', // plain text body
     html: `<div style="display:flex;justify-content:center;align-items:center;">
         <div>
-        your verify code is:
+        your verify code is : 
         </div>
-        <h1>
+        <h1 style="color:blue;">
           ${code}
         </h1>
     </div>`, // html body

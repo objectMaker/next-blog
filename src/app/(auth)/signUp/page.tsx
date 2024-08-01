@@ -19,9 +19,25 @@ import { Input } from '@/components/ui/input';
 import { handleSignUp } from '@/actions';
 import { signUpFormSchema } from '@/lib/schemas';
 import { createVerifyCode, verifyCode } from '@/lib/nodeMailer';
+import { useEffect, useRef, useState } from 'react';
+import type { MouseEvent } from 'react';
 
 export default function Page() {
   const router = useRouter();
+  const [count, setCount] = useState(0);
+  let timer: NodeJS.Timeout;
+  const btnRef = useRef(null);
+  const handleGetVerifyCode = async (formData: FormData) => {
+    let count = 60;
+    timer = setInterval(() => {
+      count = count - 1;
+      setCount(count);
+      if (count === 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+    await createVerifyCode(formData);
+  };
   // ...
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
@@ -29,6 +45,7 @@ export default function Page() {
       email: '',
       password: '',
       confirmPassword: '',
+      code: '',
     },
   });
   type FormValues = z.infer<typeof signUpFormSchema>;
@@ -46,6 +63,17 @@ export default function Page() {
         toast.error('create user failed,please try again!');
       }
     }
+  }
+  async function handleGetVerifyCodeClick(e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    await form.trigger('email');
+    const { error } = form.getFieldState('email');
+    if (error) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('email', form.getValues('email'));
+    handleGetVerifyCode(formData);
   }
   return (
     <div>
@@ -94,39 +122,49 @@ export default function Page() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>verifyCode</FormLabel>
+                <FormControl>
+                  <div className="flex">
+                    <Input
+                      placeholder="verifyCode"
+                      type="number"
+                      {...field}
+                      className="mr-2"
+                    />
+                    <Button
+                      disabled={!!count}
+                      type="button"
+                      onClick={handleGetVerifyCodeClick}
+                    >
+                      <div className="flex">
+                        <div>get verifyCode</div>
+                        {count ? (
+                          <div className="flex w-9 justify-end">({count}s)</div>
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full"
+            formAction={handleGetVerifyCode}
+          >
             SignUp
           </Button>
         </form>
       </Form>
-      <form action={createVerifyCode}>
-        <div>
-          <label htmlFor="email">email</label>
-          <input
-            type="email"
-            name="email"
-            className="rounded border px-2 py-1"
-          />
-        </div>
-        <footer>
-          <button>提交</button>
-        </footer>
-      </form>
-      <form action={verifyCode}>
-        <div>
-          <label htmlFor="email">email</label>
-          <input
-            type="email"
-            name="email"
-            className="rounded border px-2 py-1"
-          />
-          <label htmlFor="code">code</label>
-          <input type="text" name="code" className="rounded border px-2 py-1" />
-        </div>
-        <footer>
-          <button>验证</button>
-        </footer>
-      </form>
     </div>
   );
 }

@@ -31,6 +31,7 @@ export const signUpFormSchema = z
       .max(22, {
         message: 'password must be less than 22 characters.',
       }),
+    code: z.string().trim().length(4),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
