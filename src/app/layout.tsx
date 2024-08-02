@@ -4,6 +4,7 @@ import { Inter as FontSans } from 'next/font/google';
 import Header from '@/app/_components/Header';
 import { Toaster } from 'sonner';
 import StoreProvider from './StoreProvider';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -23,11 +24,18 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <StoreProvider>
-          <Toaster position="top-center" richColors offset="60px" />
-          <Header></Header>
-          {children}
-        </StoreProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <StoreProvider>
+            <Toaster position="top-center" richColors offset="60px" />
+            <Header></Header>
+            {children}
+          </StoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
