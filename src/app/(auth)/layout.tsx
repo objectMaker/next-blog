@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="text-gray-500">already have an account?</div>
               <Button asChild variant="link" className="p-0 text-gray-500">
                 <Link href={pathnameMap[pathname] || ''}>
-                  {/* to {pathnameMap[pathname].slice(1)} */}
+                  to {pathnameMap[pathname].slice(1)}
                 </Link>
               </Button>
             </div>

@@ -51,7 +51,7 @@ export default function Page() {
             <FormItem>
               <FormLabel>email</FormLabel>
               <FormControl>
-                <Input placeholder="email" {...field} />
+                <Input placeholder="email" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
+import { ReloadIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -25,17 +26,28 @@ import type { MouseEvent } from 'react';
 export default function Page() {
   const router = useRouter();
   const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(false);
   let timer: NodeJS.Timeout;
   const handleGetVerifyCode = async (formData: FormData) => {
-    let count = 60;
-    timer = setInterval(() => {
-      count = count - 1;
-      setCount(count);
-      if (count === 0) {
-        clearInterval(timer);
-      }
-    }, 1000);
-    await createVerifyCode(formData);
+    setLoading(true);
+    try {
+      await createVerifyCode(formData);
+      let count = 60;
+      setTimeout(() => {
+        setLoading(false);
+        setCount(count);
+        timer = setInterval(() => {
+          count = count - 1;
+          setCount(count);
+          if (count === 0) {
+            clearInterval(timer);
+          }
+        }, 1000);
+      }, 1000);
+    } catch (e) {
+      toast.error('get verify code error,please try again');
+      setLoading(false);
+    }
   };
   // ...
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -85,7 +97,7 @@ export default function Page() {
               <FormItem>
                 <FormLabel>email</FormLabel>
                 <FormControl>
-                  <Input placeholder="email" {...field} />
+                  <Input placeholder="email" type='email' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -136,12 +148,17 @@ export default function Page() {
                       className="mr-2"
                     />
                     <Button
-                      disabled={!!count}
+                      disabled={!!count || loading}
                       type="button"
                       onClick={handleGetVerifyCodeClick}
                     >
                       <div className="flex">
-                        <div>get verifyCode</div>
+                        <div className="flex items-center">
+                          {loading && (
+                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                          )}
+                          {loading ? 'sending...' : 'get verifyCode'}
+                        </div>
                         {count ? (
                           <div className="flex w-9 justify-end">({count}s)</div>
                         ) : (
