@@ -8,7 +8,10 @@ export default function NavLink() {
     '/signUp': '/signIn',
   };
   return (
-    <Link href={pathnameMap[pathname] || '/signUp'} className="text-gray-500">
+    <Link
+      href={pathnameMap[pathname] || '/signUp'}
+      className="text-gray-500 hover:underline"
+    >
       to {pathnameMap[pathname]?.slice?.(1) || 'signUp'}
     </Link>
   );

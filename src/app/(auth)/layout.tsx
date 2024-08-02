@@ -28,9 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {children}
             <div className="flex items-center justify-between">
               <div className="text-gray-500">already have an account?</div>
-              <Button asChild variant="link" className="p-0 text-gray-500">
-                <NavLink />
-              </Button>
+              <NavLink />
             </div>
             <Separator className="my-2"></Separator>
             <footer className="flex w-full items-center justify-between text-gray-500">
