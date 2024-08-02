@@ -9,7 +9,7 @@ import SignInBtn from './SignInBtn';
 import ToggleTheme from './ToggleTheme';
 export default function Page() {
   return (
-    <header className="flex h-16 w-full items-center justify-between bg-slate-100 p-2 dark:bg-slate-600 dark:text-white">
+    <header className="flex h-16 w-full items-center justify-between bg-slate-100 p-2 text-card-foreground dark:bg-slate-600 dark:text-white">
       <Link href="/" className="w-48 cursor-pointer">
         <Image src="/cat.svg" height={40} width={40} alt="home"></Image>
       </Link>
