@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken';
 import { signInformSchema, signUpFormSchema } from '@/lib/schemas';
 import { signIn } from '@/auth';
 import { verifyCode } from './nodeMailer';
+import { saltAndHashPassword } from '@/utils/password';
 
 export const handleSignUp = async (user: z.infer<typeof signUpFormSchema>) => {
   const dbUser = await db.user.findUnique({
@@ -28,10 +29,11 @@ export const handleSignUp = async (user: z.infer<typeof signUpFormSchema>) => {
     throw new Error('verify code not valid');
   }
   try {
+    const pwHash = saltAndHashPassword(user.password as string);
     await db.user.create({
       data: {
         email: user.email,
-        password: user.password,
+        password: pwHash,
       },
     });
   } catch (error) {
@@ -127,4 +129,27 @@ export const credentialAction = async (formData: FormData) => {
 
 export const signInAction = async () => {
   await signIn('github');
+};
+
+export const credentialSignInAction = async (formData: FormData) => {
+  try {
+    await signIn('credentials', formData);
+  } catch (err) {
+    if (err instanceof Error) {
+      if (
+        (
+          err.cause as unknown as {
+            err: Error;
+          }
+        )?.err instanceof Error
+      ) {
+        throw (
+          err.cause as unknown as {
+            err: Error;
+          }
+        )?.err;
+      }
+    }
+    throw new Error('login failed please concat manager');
+  }
 };

@@ -5,7 +5,7 @@ import Credentials from 'next-auth/providers/credentials';
 import type { Provider } from 'next-auth/providers';
 
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { saltAndHashPassword } from '@/utils/password';
+import { comparePassword } from '@/utils/password';
 
 const providers: Provider[] = [
   Github,
@@ -19,24 +19,20 @@ const providers: Provider[] = [
     authorize: async (credentials) => {
       let user = null;
 
-      // logic to salt and hash password
-      const pwHash = saltAndHashPassword(credentials.password as string);
-
       // logic to verify if the user exists
       user = await db.user.findFirst({
         where: {
           email: credentials.email as string,
         },
       });
-      if (!user) {
+      if (!user?.password) {
         // No user found, so this is their first attempt to login
         // meaning this is also the place you could do registration
         throw new Error('User not found.');
       }
-      if (user?.password !== pwHash) {
+      if (!comparePassword(credentials.password as string, user.password)) {
         throw new Error('email or password incorrect');
       }
-
       // return user object with their profile data
       return user;
     },

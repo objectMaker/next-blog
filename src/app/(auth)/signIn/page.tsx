@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { handleSignIn } from '@/actions';
+import { credentialSignInAction } from '@/actions';
 import { useRouter } from 'next/navigation';
 import { signInformSchema } from '@/lib/schemas';
 
@@ -32,13 +32,21 @@ export default function Page() {
 
   async function onSubmit(values: z.infer<typeof signInformSchema>) {
     try {
-      await handleSignIn(values);
-      toast.success('登录成功,自动跳转至首页', {
-        className: 'text-green',
-      });
+      const formData = new FormData();
+      formData.append('email', values.email);
+      formData.append('password', values.password);
+      await credentialSignInAction(formData);
+      // toast.success('登录成功,自动跳转至首页', {
+      //   className: 'text-green',
+      // });
       router.push('/');
     } catch (err) {
-      toast.error('登录失败');
+      console.log(err, 'errrrr');
+      if (err instanceof Error) {
+        console.log(err.message, 'err');
+        return toast.error(err.message);
+      }
+      toast.error('login failed');
     }
   }
   return (
