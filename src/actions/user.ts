@@ -150,6 +150,7 @@ export const credentialSignInAction = async (formData: FormData) => {
         )?.err;
       }
     }
-    throw new Error('login failed please concat manager');
+    console.log(err, 'xxxxxxxxxxxxx');
+    throw err;
   }
 };

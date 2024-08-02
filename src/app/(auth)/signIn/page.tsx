@@ -41,7 +41,6 @@ export default function Page() {
       // });
       router.push('/');
     } catch (err) {
-      console.log(err, 'errrrr');
       if (err instanceof Error) {
         console.log(err.message, 'err');
         return toast.error(err.message);
