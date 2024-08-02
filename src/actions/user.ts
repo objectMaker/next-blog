@@ -124,3 +124,7 @@ export const credentialAction = async (formData: FormData) => {
     throw error;
   }
 };
+
+export const signInAction = async () => {
+  await signIn('github');
+};

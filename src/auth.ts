@@ -50,11 +50,10 @@ export const providerMap = providers.map((provider) => {
     return { id: provider.id, name: provider.name };
   }
 });
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   providers,
   pages: {
-    signIn: '/mdSignIn',
+    signIn: '/signIn',
   },
 });

@@ -1,13 +1,14 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
+import { Github } from 'lucide-react';
+import { signInAction } from '@/actions';
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname() as '/signIn' | '/signUp';
+  const pathname = usePathname() as '/signUp';
   const pathnameMap = {
-    '/signIn': '/signUp',
     '/signUp': '/signIn',
   };
   return (
@@ -30,11 +31,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center justify-between">
               <div className="text-gray-500">already have an account?</div>
               <Button asChild variant="link" className="p-0 text-gray-500">
-                <Link href={pathnameMap[pathname] || ''}>
-                  to {pathnameMap[pathname].slice(1)}
+                <Link href={pathnameMap[pathname] || '/signUp'}>
+                  to {pathnameMap[pathname]?.slice?.(1) || 'signUp'}
                 </Link>
               </Button>
             </div>
+            <Separator className="my-2"></Separator>
+            <footer className="flex w-full items-center justify-between text-gray-500">
+              <div>third party login:</div>
+              <div className="flex items-center gap-x-2">
+                <form action={signInAction}>
+                  <Button className="size-10 rounded-full p-2" title="github">
+                    <Github className="size-5" />
+                  </Button>
+                </form>
+              </div>
+            </footer>
           </div>
         </div>
       </div>

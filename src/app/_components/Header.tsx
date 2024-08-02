@@ -5,7 +5,6 @@ import Image from 'next/image';
 // import { Button } from '@/components/ui/button';
 import Avatar from './Avatar';
 // import { useUserInfo } from '@/lib/hooks';
-import SignInBtn from './SignInBtn';
 import ToggleTheme from './ToggleTheme';
 export default function Page() {
   return (
@@ -13,7 +12,6 @@ export default function Page() {
       <Link href="/" className="w-48 cursor-pointer">
         <Image src="/cat.svg" height={40} width={40} alt="home"></Image>
       </Link>
-      <SignInBtn />
       <ToggleTheme></ToggleTheme>
       <div className="flex w-48 justify-end">
         {
