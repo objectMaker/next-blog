@@ -2,7 +2,9 @@
 import nodemailer from 'nodemailer';
 import db from '@/db';
 import { CodeStatus } from '@prisma/client';
-const expireMilliSeconds = 1000 * 60 * 5;
+const MilliSeconds = 1000 * 60 ;
+const expireMilliSeconds = MilliSeconds * 5;
+
 const transporter = nodemailer.createTransport(process.env.EMAIL_SERVER);
 
 export const createVerifyCode = async (formData: FormData) => {
@@ -13,20 +15,22 @@ export const createVerifyCode = async (formData: FormData) => {
     where: {
       email: email,
       createdAt: {
-        lt: new Date(Date.now() - expireMilliSeconds).toISOString(),
+        lt: new Date(Date.now() - MilliSeconds).toISOString(),
       },
     },
   });
 
-  const havePending = await db.verificationCode.findMany({
+  const haveLatest = await db.verificationCode.findMany({
     where: {
       email,
-      sendStatus: CodeStatus.Pending,
+      createdAt:{
+        gt: new Date(Date.now() - expireMilliSeconds).toISOString(),
+      },
     },
   });
-  if (havePending?.length) {
+  if (haveLatest?.length) {
     //if have Pending status return don't create
-    return;
+    throw new Error(`don't get verify code too frequent ,please try again later`)
   }
   const code = Math.random().toFixed(4).slice(2) + '';
   await db.verificationCode.deleteMany({
@@ -41,44 +45,46 @@ export const createVerifyCode = async (formData: FormData) => {
     },
   });
   // send mail with defined transport object
-  const info = await transporter.sendMail({
-    from: process.env.EMAIL_FROM, // sender address
-    to: email, // list of receivers
-    subject: 'website verify code', // Subject line
-    text: 'Hello world?', // plain text body
-    html: `<div style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
-        <div style="display:flex;justify-content:center;align-items:center;">
-          <div>
-            your verify code is : 
+   try{
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM, // sender address
+      to: email, // list of receivers
+      subject: 'website verify code', // Subject line
+      text: 'Hello world?', // plain text body
+      html: `<div style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+          <div style="display:flex;justify-content:center;align-items:center;">
+            <div>
+              your verify code is : 
+            </div>
+            <h1 style="color:blue;">
+              ${code}
+            </h1>
           </div>
-          <h1 style="color:blue;">
-            ${code}
-          </h1>
-        </div>
-        <h3>
-          your verify code will expired after 5 minutes
-        </h3>
-    </div>`, // html body
-  });
-  if (info.accepted) {
-    db.verificationCode.update({
-      where: {
-        id: res.id,
-      },
-      data: {
-        sendStatus: CodeStatus.Arrived,
-      },
+          <h3>
+            your verify code will expired after 5 minutes
+          </h3>
+      </div>`, // html body
     });
-  }
-  if (info.rejected) {
+    console.log(res.id)
+      await db.verificationCode.update({
+        where: {
+          id: res.id,
+        },
+        data: {
+          sendStatus: CodeStatus.Arrived,
+        },
+      });
+   }catch(err){
     db.verificationCode.delete({
       where: {
         id: res.id,
       },
     });
-  }
+    throw err;
+   }
+    
 
-  console.log('Message sent: %s', info.messageId);
 };
 
 export const verifyCode: (formData: FormData) => Promise<boolean> = async (

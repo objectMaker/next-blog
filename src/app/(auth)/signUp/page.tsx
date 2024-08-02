@@ -45,7 +45,11 @@ export default function Page() {
         }, 1000);
       }, 1000);
     } catch (e) {
-      toast.error('get verify code error,please try again');
+      if (e instanceof Error) {
+        toast.error(e.message);
+      } else {
+        toast.error('get verify code error,please try again');
+      }
       setLoading(false);
     }
   };
@@ -97,7 +101,7 @@ export default function Page() {
               <FormItem>
                 <FormLabel>email</FormLabel>
                 <FormControl>
-                  <Input placeholder="email" type='email' {...field} />
+                  <Input placeholder="email" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
