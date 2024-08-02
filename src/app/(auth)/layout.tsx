@@ -1,23 +1,17 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
-import { Github } from 'lucide-react';
 import { signInAction } from '@/actions';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Github } from 'lucide-react';
+import Image from 'next/image';
+import NavLink from './_components/NavLink';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname() as '/signUp';
-  const pathnameMap = {
-    '/signUp': '/signIn',
-  };
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="-mt-16">
@@ -28,9 +22,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             height={120}
             alt="Picture of the pig"
           />
-          <div className="h-8 rounded-sm bg-gray-800 p-2 text-center text-lg font-bold leading-[100%] text-white">
-            well come to {pathname.slice(1)}
-          </div>
         </div>
         <div className="w-[500px] overflow-hidden rounded-md border border-gray-200 shadow-lg">
           <div className="p-5 shadow-lg">
@@ -38,9 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center justify-between">
               <div className="text-gray-500">already have an account?</div>
               <Button asChild variant="link" className="p-0 text-gray-500">
-                <Link href={pathnameMap[pathname] || '/signUp'}>
-                  to {pathnameMap[pathname]?.slice?.(1) || 'signUp'}
-                </Link>
+                <NavLink />
               </Button>
             </div>
             <Separator className="my-2"></Separator>
