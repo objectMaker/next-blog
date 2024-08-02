@@ -6,6 +6,13 @@ import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { Github } from 'lucide-react';
 import { signInAction } from '@/actions';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() as '/signUp';
   const pathnameMap = {
@@ -41,9 +48,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div>third party login:</div>
               <div className="flex items-center gap-x-2">
                 <form action={signInAction}>
-                  <Button className="size-10 rounded-full p-2" title="github">
-                    <Github className="size-5" />
-                  </Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button className="size-10 rounded-full p-2">
+                          <Github className="size-5" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>github login</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </form>
               </div>
             </footer>
