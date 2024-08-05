@@ -42,7 +42,6 @@ export default function NavigationMenuDemo({
               >
                 signOut
               </Button>
-              <Button variant="ghost" className="h-8"></Button>
             </div>
           </NavigationMenuContent>
         </NavigationMenuItem>
