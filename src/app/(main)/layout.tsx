@@ -1,13 +1,14 @@
 import SideBar from '@/app/_components/SideBar';
-
-export default function ContentWrapper({
+import { auth } from '@/auth';
+export default async function ContentWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
   return (
     <div className="flex flex-1 overflow-hidden">
-      <SideBar></SideBar>
+      <SideBar session={session}></SideBar>
       <div className="h-full flex-1 overflow-y-auto transition-all duration-100 ease-out">
         {children}
       </div>
