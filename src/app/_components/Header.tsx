@@ -12,9 +12,15 @@ export default async function Page() {
   const session = await auth();
   console.log(session);
   return (
-    <header className="relative flex h-16 w-full items-center justify-between bg-slate-100 p-2 px-14 text-card-foreground dark:bg-slate-600 dark:text-white">
-      <Link href="/" className="w-48 cursor-pointer">
-        <Image src="/cat.svg" height={40} width={40} alt="home"></Image>
+    <header className="relative flex h-16 w-full items-center justify-between border-b-2 bg-secondary p-2 px-14 text-card-foreground drop-shadow-sm ">
+      <Link href="/" className="w-48 cursor-pointer dark:text-white">
+        <Image
+          src="/cat.svg"
+          height={40}
+          width={40}
+          alt="home"
+          className="dark:text-white"
+        ></Image>
       </Link>
       <ToggleTheme className="absolute right-2 top-1/2 -translate-y-1/2" />
       <div className="flex w-48 justify-end">
