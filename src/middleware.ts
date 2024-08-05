@@ -6,6 +6,9 @@ export default auth((req) => {
   if (['/signIn', '/signUp'].includes(nextUrl.pathname) && isLoggedIn) {
     return Response.redirect(new URL('/', nextUrl));
   }
+  if (['/setting', '/create'].includes(nextUrl.pathname) && !isLoggedIn) {
+    return Response.redirect(new URL('notFound', nextUrl));
+  }
 });
 // invoke the middle ware!
 
