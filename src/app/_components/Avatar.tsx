@@ -10,26 +10,14 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { handleSignOut } from '@/actions';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 export default function NavigationMenuDemo({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const signOut = async () => {
-    try {
-      await handleSignOut();
-      toast.success('sign out successfully,go to home page automatically');
-      router.push('/signIn');
-    } catch (err) {
-      toast.error('sign out failed!');
-    }
-  };
-
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -42,7 +30,16 @@ export default function NavigationMenuDemo({
               <Button asChild variant="ghost" className="h-8">
                 <Link href="/setting">setting</Link>
               </Button>
-              <Button onClick={signOut} variant="ghost" className="h-8">
+              <Button
+                onClick={() => {
+                  handleSignOut();
+                  toast.success(
+                    'Sign out successfully,automatically to signIn',
+                  );
+                }}
+                variant="ghost"
+                className="h-8"
+              >
                 signOut
               </Button>
               <Button variant="ghost" className="h-8"></Button>

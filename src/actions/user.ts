@@ -1,14 +1,12 @@
 'use server';
 
-import { redirect } from 'next/navigation';
-import { AuthError } from 'next-auth';
 import { z } from 'zod';
 import db from '@/db';
 
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { signInformSchema, signUpFormSchema } from '@/lib/schemas';
-import { signIn } from '@/auth';
+import { signIn, signOut } from '@/auth';
 import { verifyCode } from './nodeMailer';
 import { saltAndHashPassword } from '@/utils/password';
 
@@ -59,7 +57,14 @@ export const handleSignIn = async (user: z.infer<typeof signInformSchema>) => {
   }
 };
 export const handleSignOut = async () => {
-  setToken(undefined);
+  try {
+    await signOut({
+      redirectTo: '/signIn',
+    });
+  } catch (err) {
+    console.log(err, 'err++++++++++++++++++++');
+    throw err;
+  }
 };
 
 export async function setToken(id?: string) {
@@ -105,27 +110,6 @@ export async function getUserInfoByJwt() {
     throw err;
   }
 }
-
-export const credentialAction = async (formData: FormData) => {
-  try {
-    await signIn('credentials', formData);
-  } catch (error) {
-    console.log(error.cause.err, 'error++++++++++++++++++++++++++++++++++++++');
-    throw error.cause.err;
-    // Signin can fail for a number of reasons, such as the user
-    // not existing, or the user not having the correct role.
-    // In some cases, you may want to redirect to a custom error
-    if (error instanceof AuthError) {
-      throw error;
-    }
-
-    // Otherwise if a redirects happens NextJS can handle it
-    // so you can just re-thrown the error and let NextJS handle it.
-    // Docs:
-    // https://nextjs.org/docs/app/api-reference/functions/redirect#server-component
-    throw error;
-  }
-};
 
 export const githubSignInAction = async () => {
   await signIn('github', {
