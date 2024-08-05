@@ -5,6 +5,7 @@ import Header from '@/app/_components/Header';
 import { Toaster } from 'sonner';
 import StoreProvider from './StoreProvider';
 import { ThemeProvider } from '@/components/theme-provider';
+import SessionProvider from './SessionProvider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -24,18 +25,20 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <StoreProvider>
-            <Toaster position="top-center" richColors offset="60px" />
-            <Header></Header>
-            {children}
-          </StoreProvider>
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <StoreProvider>
+              <Toaster position="top-center" richColors offset="60px" />
+              <Header></Header>
+              {children}
+            </StoreProvider>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

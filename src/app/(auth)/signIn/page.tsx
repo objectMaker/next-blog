@@ -18,8 +18,11 @@ import { Input } from '@/components/ui/input';
 import { credentialSignInAction } from '@/actions';
 import { useRouter } from 'next/navigation';
 import { signInformSchema } from '@/lib/schemas';
+import { useSession } from 'next-auth/react';
 
 export default function Page() {
+  const session = useSession();
+  console.log(session, 'session');
   // ...
   const form = useForm<z.infer<typeof signInformSchema>>({
     resolver: zodResolver(signInformSchema),
