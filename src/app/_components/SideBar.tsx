@@ -51,7 +51,12 @@ export default function SideBar(props: { className?: string; session: any }) {
         collapse ? 'w-16' : 'w-16 lg:w-56',
       )}
     >
-      <div className="hidden justify-end lg:flex">
+      <div
+        className={cn(
+          'hidden justify-end lg:flex',
+          collapse && 'justify-center',
+        )}
+      >
         {
           <PanelLeftOpen
             onClick={() => {
