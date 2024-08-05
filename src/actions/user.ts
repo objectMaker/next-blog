@@ -127,7 +127,7 @@ export const credentialAction = async (formData: FormData) => {
   }
 };
 
-export const signInAction = async () => {
+export const githubSignInAction = async () => {
   await signIn('github', {
     redirectTo: '/',
   });

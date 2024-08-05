@@ -1,4 +1,4 @@
-import { signInAction } from '@/actions';
+import { githubSignInAction } from '@/actions';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <footer className="flex w-full items-center justify-between text-gray-500">
               <div>third party login:</div>
               <div className="flex items-center gap-x-2">
-                <form action={signInAction}>
+                <form action={githubSignInAction}>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
