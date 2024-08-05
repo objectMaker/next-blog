@@ -1,12 +1,14 @@
-import { NextResponse, NextRequest } from 'next/server';
-export default function middleware(request: NextRequest) {
-  if (!request.cookies.get('token')?.value) {
-    return NextResponse.redirect(new URL('/not-found', request.url));
+import { auth } from '@/auth';
+export default auth((req) => {
+  const { nextUrl } = req;
+  // console.log("NEXT URL" + nextUrl.pathname)
+  const isLoggedIn = !!req.auth;
+  if (nextUrl.pathname === '/signIn' && isLoggedIn) {
+    return Response.redirect(new URL('/', nextUrl));
   }
-}
+});
+// invoke the middle ware!
 
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: '/diary',
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };
-export { auth as middleware } from '@/auth';
