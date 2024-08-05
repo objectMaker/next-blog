@@ -3,7 +3,7 @@ export default auth((req) => {
   const { nextUrl } = req;
   // console.log("NEXT URL" + nextUrl.pathname)
   const isLoggedIn = !!req.auth;
-  if (nextUrl.pathname === '/signIn' && isLoggedIn) {
+  if (['/signIn', '/signUp'].includes(nextUrl.pathname) && isLoggedIn) {
     return Response.redirect(new URL('/', nextUrl));
   }
 });
