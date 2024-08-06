@@ -13,6 +13,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { selectCollapse, toggleCollapse } from '@/lib/collapseStore';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SideBar(props: { className?: string; session: any }) {
   console.log(props.session, 'props.session');
   const dispatch = useAppDispatch();

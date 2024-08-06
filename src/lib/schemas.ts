@@ -37,3 +37,10 @@ export const signUpFormSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
+
+export const articleFormSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1, {
+    message: 'content must be filled',
+  }),
+});

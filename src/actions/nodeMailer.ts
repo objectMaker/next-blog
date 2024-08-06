@@ -2,7 +2,7 @@
 import nodemailer from 'nodemailer';
 import db from '@/db';
 import { CodeStatus } from '@prisma/client';
-const MilliSeconds = 1000 * 60 ;
+const MilliSeconds = 1000 * 60;
 const expireMilliSeconds = MilliSeconds * 5;
 
 const transporter = nodemailer.createTransport(process.env.EMAIL_SERVER);
@@ -23,14 +23,16 @@ export const createVerifyCode = async (formData: FormData) => {
   const haveLatest = await db.verificationCode.findMany({
     where: {
       email,
-      createdAt:{
+      createdAt: {
         gt: new Date(Date.now() - expireMilliSeconds).toISOString(),
       },
     },
   });
   if (haveLatest?.length) {
     //if have Pending status return don't create
-    throw new Error(`don't get verify code too frequent ,please try again later`)
+    throw new Error(
+      `don't get verify code too frequent ,please try again later`,
+    );
   }
   const code = Math.random().toFixed(4).slice(2) + '';
   await db.verificationCode.deleteMany({
@@ -45,8 +47,7 @@ export const createVerifyCode = async (formData: FormData) => {
     },
   });
   // send mail with defined transport object
-   try{
-
+  try {
     await transporter.sendMail({
       from: process.env.EMAIL_FROM, // sender address
       to: email, // list of receivers
@@ -66,25 +67,23 @@ export const createVerifyCode = async (formData: FormData) => {
           </h3>
       </div>`, // html body
     });
-    console.log(res.id)
-      await db.verificationCode.update({
-        where: {
-          id: res.id,
-        },
-        data: {
-          sendStatus: CodeStatus.Arrived,
-        },
-      });
-   }catch(err){
+    console.log(res.id);
+    await db.verificationCode.update({
+      where: {
+        id: res.id,
+      },
+      data: {
+        sendStatus: CodeStatus.Arrived,
+      },
+    });
+  } catch (err) {
     db.verificationCode.delete({
       where: {
         id: res.id,
       },
     });
     throw err;
-   }
-    
-
+  }
 };
 
 export const verifyCode: (formData: FormData) => Promise<boolean> = async (
